@@ -1,0 +1,312 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © joyfulLemur87682
+
+//@version=5
+indicator("MAGIC LINES",overlay=true)
+
+//prices
+daily_high  = request.security(syminfo.tickerid, "D", high[1], lookahead=barmerge.lookahead_on)
+daily_low   = request.security(syminfo.tickerid, "D", low[1], lookahead=barmerge.lookahead_on)
+daily_close = request.security(syminfo.tickerid, "D", close, lookahead=barmerge.lookahead_on)
+
+// angles
+j3=0.12
+j4= 0.25
+j5=0.375
+j6= 0.5
+j7= 0.625
+j8= 0.75
+j9=0.875
+j10 = 1
+
+sqrt = math.sqrt(daily_close)
+int c6 = math.floor(sqrt)
+int round = c6-1
+int f6 =  math.round(((math.round(sqrt)==sqrt)?sqrt+1:math.ceil(sqrt)))
+int adjust = f6+1
+
+
+///////////////
+
+float B8 = (f6+j4)*(f6+j4)
+float E8 = (f6+j5)*(f6+j5)
+float C8 = (daily_close>=B8 ) and ( daily_close<E8)? daily_close:0
+//float D8 = D8
+float H8 = (f6+j6)*(f6+j6)
+float F8 = (daily_close>=E8 ) and ( daily_close<H8)? daily_close:0
+//float G8 = G8
+
+//float B9 = B9
+float C9 = (c6+j4)*(c6+j4)
+float E9 = (c6+j5)*(c6+j5)
+float G9 = (c6+j6)*(c6+j6)
+
+float D10 = math.pow(round+j4,2)
+float E10 = math.pow(round+j5,2)
+float F10 = math.pow(round+j6,2)
+
+float B11 = (f6+j3)*(f6+j3)
+float C11 = (c6+j3)*(c6+j3)
+float D11 = math.pow(round+j3,2)
+float E11 = math.pow(round,2)
+float F11 = math.pow(round+j7,2)
+float G11 = (c6+j7)*(c6+j7)
+float H11 = (f6+j7)*(f6+j7)
+
+float D12 = math.pow(round+j10,2)
+float E12 = math.pow(round+j9,2)
+float F12 = math.pow(round+j8,2)
+
+float C13 = (c6+j10)*(c6+j10)
+float E13 = (c6+j9)*(c6+j9)
+float G13 = (c6+j8)*(c6+j8)
+
+float B14 = (f6+j10)*(f6+j10)
+float E14 = (f6+j9)*(f6+j9)
+float H14 = (f6+j8)*(f6+j8)
+
+float D9 = (daily_close>=C9 ) and ( daily_close<E9)? daily_close:0
+float F9 = (daily_close>=E9 ) and ( daily_close<G9)? daily_close:0
+float H9 = (daily_close>=H8 ) and ( daily_close<H11)? daily_close:0
+
+float B10 = (daily_close>=B11 ) and ( daily_close<B8)? daily_close:0
+float C10 = (daily_close>=C11 ) and ( daily_close<C9)? daily_close:0
+float G10 = (daily_close>=G11 ) and ( daily_close<G11)? daily_close:0
+//float H10 = H10
+
+//float B12 = B12
+float C12 = (daily_close>=D12 ) and ( daily_close<C11)? daily_close:0
+
+float G12 = (daily_close>=G11 ) and ( daily_close<G13)? daily_close:0
+float H12= (daily_close>=H11 ) and ( daily_close<H14)? daily_close:0
+
+float B13 = (daily_close>=C13 ) and ( daily_close<B11)? daily_close:0
+float D13 = (daily_close>=E13 ) and ( daily_close<C13)? daily_close:0
+float F13 = (daily_close>=G13 ) and ( daily_close<E13)? daily_close:0
+//float H13 = H13
+
+//float C14 = C14
+float D14 = (daily_close>=G13 ) and ( daily_close<E13)? daily_close:0
+//float F14 = F14
+float G14 = (daily_close>=H14 ) and ( daily_close<E14)? daily_close:0
+
+///////////////
+
+
+///////////////
+
+float r1= (C12!=0?C9:(C10!=0?E9:(D9!=0?G9:(F9!=0?G11:(G10!=0?G13:(G12!=0?E13:(F13!=0?C13:(D13!=0?B11:(B13!=0?B8:(B10!=0?E8:(C8!=0?H8:(F8!=0?H11:(H9!=0?H14:(H12!=0?E14:(G14!=0?B14:(D14!=0?B14:0))))))))))))))))
+float r2 = (C12!=0?E9:(C10!=0?G9:(D9!=0?G11:(F9!=0?G13:(G10!=0?E13:(G12!=0?C13:(F13!=0?B11:(D13!=0?B8:(B13!=0?E8:(B10!=0?H8:(C8!=0?H11:(F8!=0?H14:(H9!=0?E14:(H12!=0?B14:(G14!=0?B14:(D14!=0?B14:0))))))))))))))))
+float r3 = (C12!=0?G9:(C10!=0?G11:(D9!=0?G13:(F9!=0?E13:(G10!=0?C13:(G12!=0?B11:(F13!=0?B8:(D13!=0?E8:(B13!=0?H8:(B10!=0?H11:(C8!=0?H14:(F8!=0?E14:(H9!=0?B14:(H12!=0?B14:(G14!=0?B14:(D14!=0?B14:0))))))))))))))))
+float r4 = (C12!=0?G11:(C10!=0?G13:(D9!=0?E13:(F9!=0?C13:(G10!=0?B11:(G12!=0?B8:(F13!=0?E8:(D13!=0?H8:(B13!=0?H11:(B10!=0?H14:(C8!=0?E14:(F8!=0?B14:(H9!=0?B14:(H12!=0?B14:(G14!=0?B14:(D14!=0?B14:0))))))))))))))))
+float r5 = (C12!=0?G13:(C10!=0?E13:(D9!=0?C13:(F9!=0?B11:(G10!=0?B8:(G12!=0?E8:(F13!=0?H8:(D13!=0?H11:(B13!=0?H14:(B10!=0?E14:(C8!=0?B14:(F8!=0?B14:(H9!=0?B14:(H12!=0?B14:(G14!=0?B14:(D14!=0?B14:0))))))))))))))))
+float s1 = (C12!=0?E12:(C10!=0?D12:(D9!=0?C11:(F9!=0?C9:(G10!=0?E9:(G12!=0?G9:(F13!=0?G11:(D13!=0?G13:(B13!=0?E13:(B10!=0?C13:(C8!=0?B11:(F8!=0?B8:(H9!=0?E8:(H12!=0?H8:(G14!=0?H11:(D14!=0?H14:0))))))))))))))))
+float s2 = (C12!=0?F12:(C10!=0?E12:(D9!=0?D12:(F9!=0?C11:(G10!=0?C9:(G12!=0?E9:(F13!=0?G9:(D13!=0?G11:(B13!=0?G13:(B10!=0?E13:(C8!=0?C13:(F8!=0?B11:(H9!=0?B8:(H12!=0?E8:(G14!=0?H8:(D14!=0?H11:0))))))))))))))))
+float s3 = (C12!=0?F11:(C10!=0?F12:(D9!=0?E12:(F9!=0?D12:(G10!=0?C11:(G12!=0?C9:(F13!=0?E9:(D13!=0?G9:(B13!=0?G11:(B10!=0?G13:(C8!=0?E13:(F8!=0?C13:(H9!=0?B11:(H12!=0?B8:(G14!=0?E8:(D14!=0?H8:0))))))))))))))))      
+float s4 = (C12!=0?F10:(C10!=0?F11:(D9!=0?F12:(F9!=0?E12:(G10!=0?D12:(G12!=0?C11:(F13!=0?C9:(D13!=0?E9:(B13!=0?G9:(B10!=0?G11:(C8!=0?G13:(F8!=0?E13:(H9!=0?C13:(H12!=0?B11:(G14!=0?B8:(D14!=0?E8:0))))))))))))))))
+float s5 = (C12!=0?E10:(C10!=0?F10:(D9!=0?F11:(F9!=0?F12:(G10!=0?E12:(G12!=0?D12:(F13!=0?C11:(D13!=0?C9:(B13!=0?E9:(B10!=0?G9:(C8!=0?G11:(F8!=0?G13:(H9!=0?E13:(H12!=0?C13:(G14!=0?B11:(D14!=0?B8:0))))))))))))))))
+
+float buy =  (C12!=0?C11:(C10!=0?C9:(D9!=0?E9:(F9!=0?G9:(G10!=0?G11:(G12!=0?G13:(F13!=0?E13:(D13!=0?C13:(B13!=0?B11:(B10!=0?B8:(C8!=0?E8:(F8!=0?H8:(H9!=0?H11:(H12!=0?H14:(G14!=0?E14:(D14!=0?B14:0))))))))))))))))
+float tb1= r1*0.9995
+float tb2 = r2*0.9995
+float tb3 = r3*0.9995
+float tb4 = r4*0.9995
+float tb5 = r5*0.9995
+float rsl = (C12!=0?D12:(C10!=0?C11:(D9!=0?C9:(F9!=0?E9:(G10!=0?G9:(G12!=0?G11:(F13!=0?G13:(D13!=0?E13:(B13!=0?C13:(B10!=0?B11:(C8!=0?B8:(F8!=0?E8:(H9!=0?H8:(H12!=0?H11:(G14!=0?H14:(D14!=0?E14:0))))))))))))))))
+
+float sell = (C12!=0?D12:(C10!=0?C11:(D9!=0?C9:(F9!=0?E9:(G10!=0?G9:(G12!=0?G11:(F13!=0?G13:(D13!=0?E13:(B13!=0?C13:(B10!=0?B11:(C8!=0?B8:(F8!=0?E8:(H9!=0?H8:(H12!=0?H11:(G14!=0?H14:(D14!=0?E14:0))))))))))))))))
+float ts1= s1*0.9995
+float ts2 = s2*0.9995
+float ts3 = s3*0.9995
+float ts4 = s4*0.9995
+float ts5 = s5*0.9995
+float ssl = (C12!=0?C11:(C10!=0?C9:(D9!=0?E9:(F9!=0?G9:(G10!=0?G11:(G12!=0?G13:(F13!=0?E13:(D13!=0?C13:(B13!=0?B11:(B10!=0?B8:(C8!=0?E8:(F8!=0?H8:(H9!=0?H11:(H12!=0?H14:(G14!=0?E14:(D14!=0?B14:0))))))))))))))))
+
+//////////////
+dt      = time - time[1]
+ddt     =   request.security(syminfo.tickerid, "D", time) - request.security(syminfo.tickerid, "D", time[1])
+dyt     =   request.security(syminfo.tickerid, "D", time_close[1] )
+
+test = (1>=2 and 2<3) ? 3568 :3600
+buyline=line.new(x1 = dyt,y1=buy ,x2 = dyt+ddt,y2=buy ,xloc = xloc.bar_time, extend=extend.none,color=color.green)
+buyline1=line.new(x1 = dyt,y1=tb1+1 ,x2 = dyt+ddt,y2=tb1 +1,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(58, 134, 60))
+buyline2=line.new(x1 = dyt,y1=tb2+1,x2 = dyt+ddt,y2=tb2+1 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(49, 112, 51))
+buyline3=line.new(x1 = dyt,y1=tb3,x2 = dyt+ddt,y2=tb3 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(29, 67, 31))
+buyline4=line.new(x1 = dyt,y1=tb4,x2 = dyt+ddt,y2=tb4 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(17, 38, 18))
+
+sellline=line.new(x1 = dyt,y1=sell ,x2 = dyt+ddt,y2=sell ,xloc = xloc.bar_time, extend=extend.none,color=color.red)
+sellline1=line.new(x1 = dyt,y1=ts1-1 ,x2 = dyt+ddt,y2=ts1-1 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(221, 69, 69))
+sellline2=line.new(x1 = dyt,y1=ts2-1 ,x2 = dyt+ddt,y2=ts2-1 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(169, 54, 54))
+sellline3=line.new(x1 = dyt,y1=ts3 ,x2 = dyt+ddt,y2=ts3 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(131, 43, 43))
+sellline4=line.new(x1 = dyt,y1=ts4 ,x2 = dyt+ddt,y2=ts4 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(89, 32, 32))
+
+line.delete(buyline[1])
+line.delete(buyline1[1])
+line.delete(buyline2[1])
+line.delete(buyline3[1])
+line.delete(buyline4[1])
+line.delete(sellline[1])
+line.delete(sellline1[1])
+line.delete(sellline2[1])
+line.delete(sellline3[1])
+line.delete(sellline4[1])
+
+
+
+//// OB
+
+
+/// EMA
+len = input.int(60, minval=1, title="Length")
+src = input(close, title="Source")
+offset = input.int(title="Offset", defval=0, minval=-500, maxval=500)
+out = ta.ema(src, len)
+plot(out, title="EMA", color=color.blue, offset=offset)
+
+ma(source, length, type) =>
+    switch type
+        "SMA" => ta.sma(source, length)
+        "EMA" => ta.ema(source, length)
+        "SMMA (RMA)" => ta.rma(source, length)
+        "WMA" => ta.wma(source, length)
+        "VWMA" => ta.vwma(source, length)
+
+typeMA = input.string(title = "Method", defval = "EMA", options=["SMA", "EMA", "SMMA (RMA)", "WMA", "VWMA"], group="Smoothing")
+smoothingLength = input.int(title = "Length", defval = 5, minval = 1, maxval = 100, group="Smoothing")
+
+smoothingLine = ma(out, smoothingLength, typeMA)
+plot(smoothingLine, title="Smoothing Line", color=#f37f20, offset=offset, display=display.all)
+
+
+
+/// OB
+
+sens = input.int(28, minval=1, title='Sensitivity', group='Order Block', tooltip='Lower the sensitivity to show more order blocks. A higher sensitivity will show less order blocks.')
+sens /= 100
+
+// OB
+OBMitigationType = input.string("Close", title="OB Mitigation Type", options=["Close", "Wick"], group="Order Block", tooltip="Choose how Order Blocks are mitigated")
+OBBullMitigation = OBMitigationType=="Close" ? close[1] : low
+OBBearMitigation = OBMitigationType=="Close" ? close[1] : high
+
+//OB Colors
+col_bullish = input.color(#5db49e, title="Bullish OB Border", inline="a", group="Order Block")
+col_bullish_ob = input.color(color.new(#64C4AC, 85), title="Background", inline="a", group="Order Block")
+
+col_bearish = input.color(#4760bb, title="Bearish OB Border", inline="b", group="Order Block")
+col_bearish_ob = input.color(color.new(#506CD3, 85), title="Background", inline="b", group="Order Block")
+
+
+// Alerts
+buy_alert = input.bool(title='Buy Signal', defval=true, group='Alerts', tooltip='An alert will be sent when price goes below the top of a bullish order block.')
+sell_alert = input.bool(title='Sell Signal', defval=true, group='Alerts', tooltip='An alert will be sent when price goes above the bottom of a bearish order block.')
+
+
+// Delacring Variables
+bool ob_created = false
+bool ob_created_bull = false
+var int cross_index = na
+
+// Declaring Box Arrays
+var box drawlongBox = na
+var longBoxes = array.new_box()
+var box drawShortBox = na
+var shortBoxes = array.new_box()
+
+
+// Custom Rate of Change (ROC) calculation. This is to calculate high momentum moves in the market.
+pc = (open - open[4]) / open[4] * 100
+
+// If the ROC crossover our Sensitivty input - Then create an Order Block
+// Sensitivty is negative as this is a Bearish OB
+if ta.crossunder(pc, -sens)
+    ob_created := true
+    cross_index := bar_index
+    cross_index
+
+// If the ROC crossover our Sensitivty input - Then create an Order Block
+if ta.crossover(pc, sens)
+    ob_created_bull := true
+    cross_index := bar_index
+    cross_index
+
+
+// -------------------------------
+// Bearish OB Creation
+// -------------------------------
+// Check if we should create a OB, Also check if we haven't created an OB in the last 5 candles.
+if ob_created and cross_index - cross_index[1] > 5
+    float last_green = 0
+    float highest = 0
+    // Loop through the most recent candles and find the first GREEN (Bullish) candle. We will place our OB here.
+    for i = 4 to 15 by 1
+        if close[i] > open[i]
+            last_green := i
+            break
+    // Draw our OB on that candle - then push the box into our box arrays.
+    drawShortBox := box.new(left=bar_index[last_green], top=high[last_green], bottom=low[last_green], right=bar_index[last_green], bgcolor=col_bearish_ob, border_color=col_bearish, extend=extend.right)
+    array.push(shortBoxes, drawShortBox)
+
+// -------------------------------
+// Bullish OB Creation
+// -------------------------------
+// Check if we should create a OB, Also check if we haven't created an OB in the last 5 candles.
+if ob_created_bull and cross_index - cross_index[1] > 5
+    float last_red = 0
+    float highest = 0
+    // Loop through the most recent candles and find the first RED (Bearish) candle. We will place our OB here.
+    for i = 4 to 15 by 1
+        if close[i] < open[i]
+            last_red := i
+            break
+    // Draw our OB on that candle - then push the box into our box arrays.
+    drawlongBox := box.new(left=bar_index[last_red], top=high[last_red], bottom=low[last_red], right=bar_index[last_red], bgcolor=col_bullish_ob, border_color=col_bullish, extend=extend.right)
+    array.push(longBoxes, drawlongBox)
+
+
+// ----------------- Bearish Order Block -------------------
+// Clean up OB boxes and place alerts
+if array.size(shortBoxes) > 0
+    for i = array.size(shortBoxes) - 1 to 0 by 1
+        sbox = array.get(shortBoxes, i)
+        top = box.get_top(sbox)
+        bot = box.get_bottom(sbox)
+        // If the two last closes are above the high of the bearish OB - Remove the OB
+        if OBBearMitigation > top
+            array.remove(shortBoxes, i)
+            box.delete(sbox)
+        // Alerts
+        if high > bot and sell_alert
+            alert('Price inside Bearish OB', alert.freq_once_per_bar)
+
+// ----------------- Bullish Clean Up -------------------
+// Clean up OB boxes and place alerts
+if array.size(longBoxes) > 0
+    for i = array.size(longBoxes) - 1 to 0 by 1
+        sbox = array.get(longBoxes, i)
+        bot = box.get_bottom(sbox)
+        top = box.get_top(sbox)
+        // If the two last closes are below the low of the bullish OB - Remove the OB
+        if OBBullMitigation < bot
+            array.remove(longBoxes, i)
+            box.delete(sbox)
+        // Alerts
+        if low < top and buy_alert
+            alert('Price inside Bullish OB', alert.freq_once_per_bar)
+
+
+
+
+// ALERT SCRIPt
+
+//longBreakout    = input.price(title="Long Breakout Price", defval=0.0, confirm=true)
+//shortBreakout   = input.price(title="Short Breakout Price", defval=0.0, confirm=true)
+//offset          = input.int(title="Offset", defval=5)
+
+//longAlert = longBreakout > 0 and close > longBreakout
+//shortAlert = shortBreakout > 0 and close < shortBreakout
+
+//plot(longBreakout > 0 ? longBreakout : na, title="Long Breakout Price", color=color.green, offset=offset)
+//plot(shortBreakout > 0 ? shortBreakout : na, title="Short Breakout Price", color=color.red, offset=offset)
+
+//alertcondition(longAlert or shortAlert, title="BOS Alert!", message="BOS alert for {{ticker}} on price {{close}}")
