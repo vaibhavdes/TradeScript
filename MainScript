@@ -1,8 +1,9 @@
 // This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
-// © joyfulLemur87682
+// © vaibhavkurkute
 
-//@version=5
+//@version=97
 indicator("MAGIC LINES",overlay=true)
+levels = input.int(2, minval=1, maxval=5, title='Price Levels', group='Price Levels', tooltip='To Show Buying & Selling Levels')
 
 //prices
 daily_high  = request.security(syminfo.tickerid, "D", high[1], lookahead=barmerge.lookahead_on)
@@ -127,29 +128,43 @@ dt      = time - time[1]
 ddt     =   request.security(syminfo.tickerid, "D", time) - request.security(syminfo.tickerid, "D", time[1])
 dyt     =   request.security(syminfo.tickerid, "D", time_close[1] )
 
-test = (1>=2 and 2<3) ? 3568 :3600
-buyline=line.new(x1 = dyt,y1=buy ,x2 = dyt+ddt,y2=buy ,xloc = xloc.bar_time, extend=extend.none,color=color.green)
-buyline1=line.new(x1 = dyt,y1=tb1+1 ,x2 = dyt+ddt,y2=tb1 +1,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(58, 134, 60))
-buyline2=line.new(x1 = dyt,y1=tb2+1,x2 = dyt+ddt,y2=tb2+1 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(49, 112, 51))
-buyline3=line.new(x1 = dyt,y1=tb3,x2 = dyt+ddt,y2=tb3 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(29, 67, 31))
-buyline4=line.new(x1 = dyt,y1=tb4,x2 = dyt+ddt,y2=tb4 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(17, 38, 18))
+if(levels>=1)
+    buyline=line.new(x1 = dyt,y1=buy ,x2 = dyt+ddt,y2=buy ,xloc = xloc.bar_time, extend=extend.none,color=color.green)
+    line.delete(buyline[1])
+    sellline=line.new(x1 = dyt,y1=sell ,x2 = dyt+ddt,y2=sell ,xloc = xloc.bar_time, extend=extend.none,color=color.red)
+    line.delete(sellline[1])
 
-sellline=line.new(x1 = dyt,y1=sell ,x2 = dyt+ddt,y2=sell ,xloc = xloc.bar_time, extend=extend.none,color=color.red)
-sellline1=line.new(x1 = dyt,y1=ts1-1 ,x2 = dyt+ddt,y2=ts1-1 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(221, 69, 69))
-sellline2=line.new(x1 = dyt,y1=ts2-1 ,x2 = dyt+ddt,y2=ts2-1 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(169, 54, 54))
-sellline3=line.new(x1 = dyt,y1=ts3 ,x2 = dyt+ddt,y2=ts3 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(131, 43, 43))
-sellline4=line.new(x1 = dyt,y1=ts4 ,x2 = dyt+ddt,y2=ts4 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(89, 32, 32))
+if(levels>1)
+    buyline1=line.new(x1 = dyt,y1=tb1 ,x2 = dyt+ddt,y2=tb1,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(58, 134, 60))
+    line.delete(buyline1[1])
+    sellline1=line.new(x1 = dyt,y1=ts1 ,x2 = dyt+ddt,y2=ts1,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(221, 69, 69))
+    line.delete(sellline1[1])
 
-line.delete(buyline[1])
-line.delete(buyline1[1])
-line.delete(buyline2[1])
-line.delete(buyline3[1])
-line.delete(buyline4[1])
-line.delete(sellline[1])
-line.delete(sellline1[1])
-line.delete(sellline2[1])
-line.delete(sellline3[1])
-line.delete(sellline4[1])
+if(levels>2)
+    buyline2=line.new(x1 = dyt,y1=tb2,x2 = dyt+ddt,y2=tb2 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(49, 112, 51))
+    line.delete(buyline2[1])
+    sellline2=line.new(x1 = dyt,y1=ts2 ,x2 = dyt+ddt,y2=ts2 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(169, 54, 54))
+    line.delete(sellline2[1])
+
+if(levels>3 )
+    buyline3=line.new(x1 = dyt,y1=tb3,x2 = dyt+ddt,y2=tb3 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(29, 67, 31))
+    line.delete(buyline3[1])
+    sellline3=line.new(x1 = dyt,y1=ts3 ,x2 = dyt+ddt,y2=ts3 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(131, 43, 43))
+    line.delete(sellline3[1])
+
+if(levels>4)
+    buyline4=line.new(x1 = dyt,y1=tb4,x2 = dyt+ddt,y2=tb4 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(17, 38, 18))
+    line.delete(buyline4[1])
+    sellline4=line.new(x1 = dyt,y1=ts4 ,x2 = dyt+ddt,y2=ts4 ,xloc = xloc.bar_time, extend=extend.none,color=color.rgb(89, 32, 32))
+    line.delete(sellline4[1])
+
+
+
+
+
+
+
+
 
 
 
@@ -157,9 +172,9 @@ line.delete(sellline4[1])
 
 
 /// EMA
-len = input.int(60, minval=1, title="Length")
-src = input(close, title="Source")
-offset = input.int(title="Offset", defval=0, minval=-500, maxval=500)
+len = input.int(60, minval=1, title="Length", group='EMA')
+src = input(close, title="Source", group='EMA')
+offset = input.int(title="Offset", defval=0, minval=-500, maxval=500, group='EMA')
 out = ta.ema(src, len)
 plot(out, title="EMA", color=color.blue, offset=offset)
 
@@ -177,7 +192,11 @@ smoothingLength = input.int(title = "Length", defval = 5, minval = 1, maxval = 1
 smoothingLine = ma(out, smoothingLength, typeMA)
 plot(smoothingLine, title="Smoothing Line", color=#f37f20, offset=offset, display=display.all)
 
+if ta.crossover(smoothingLine, out)
+    alert("buy")
 
+if ta.crossover(out, smoothingLine)
+    alert("sell")
 
 /// OB
 
